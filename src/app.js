@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom';
 class Application extends React.Component{
     render(){
         return (
-            <div class="application"></div>
+            <div className="application">s</div>
         );
     }
 }
+
 
 ReactDOM.render(
     <Application />,
