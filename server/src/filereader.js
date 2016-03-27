@@ -11,21 +11,39 @@ const readfile = (filename) => {
         });
     });
 }
-
 const transformIntoJs = (filecontents) => {
-
+    return new Promise((resolve, reject) => {
+        parseString(filecontents, (err, result) => {
+            if(err){ reject(err); }else{
+                resolve(result);
+            }
+        });
+    });
+}
+const _getName = (gpxJsData) => gpxJsData.gpx.trk[0].name[0];
+const _getDate = (gpxJsData) => gpxJsData.gpx.metadata[0].time[0];
+const _getTrackPoints = (gpxJsData) => {
+    return gpxJsData.gpx.trk[0].trkseg[0].trkpt.map((item) => {
+        return {
+            lat: item.$.lat,
+            lon: item.$.lon,
+            time: item.time[0],
+            heartrate: item.extensions[0]['gpxtpx:TrackPointExtension'][0]['gpxtpx:hr'][0],
+            elevation: item.ele[0]
+        };
+    });
 }
 
-fs.readdir(__dirname+'/../data', (err, contents) => {
-    console.log(err, contents);
-});
+const transformIntoViewData = (gpxJsData) => {
+    return {
+        name: _getName(gpxJsData),
+        date: _getDate(gpxJsData),
+        trackpoints: _getTrackPoints(gpxJsData)
+    }
+}
 
-readfile(__dirname+'/../data/Kompenserar_g_rdagens_tjuvstart_tar_ett_varv_runt_Mj_rn_till_n_r_jag_nd_r_ig_ng.gpx').then((filedata) => {
-    console.log("filedata", filedata);
-}, (err) => {
-    console.log("error", err);
-})
-
-// parseString(xml, function (err, result) {
-//     console.dir(result);
-// });
+export const getExcersize = (filename) => {
+    return readfile(filename)
+        .then(transformIntoJs)
+        .then(transformIntoViewData);
+}

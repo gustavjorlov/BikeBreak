@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel/register",
+    "test": "mocha server/test --compilers js:babel-core/register",
     "clean": "rimraf client/dist && mkdir client/dist",
     "copy:html": "cp client/src/index.html client/dist/",
     "copy:style": "echo 'TODO: copy style'",
