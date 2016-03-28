@@ -13,12 +13,14 @@ describe('File reading test', () => {
             done();
         });
     });
+
     it('should get a list of the dates of the exersizes', (done) => {
         getExcersizeDates().then((dates) => {
             expect(dates).to.be.an('array');
             done();
         }, someError);
     });
+    
     it('should get a nice view data summary object', (done) => {
         const testExersize = (exersize) => {
             expect(exersize.name).to.exist;
