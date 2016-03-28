@@ -2,6 +2,8 @@ import {parseString} from 'xml2js';
 import Promise from 'promise';
 import fs from 'fs';
 
+const filedir = __dirname+'/../data';
+
 const readfile = (filename) => {
     return new Promise((resolve, reject) => {
         fs.readFile(filename, {'encoding': 'utf-8'}, (err, filedata) => {
@@ -47,16 +49,23 @@ export const getExcersize = (filename) => {
         .then(transformIntoViewData);
 }
 
-const readdir = (dirname) => {
+export const getExcersizeDates = () => {
+    return getExcersizeFiles().then((filenames) => {
+        const filepaths = filenames.map((filename) => __dirname + '/../data/' + filename);
+        return Promise.all(filepaths.map(getExcersize)).then((response) => {
+            return response.map((item) => {
+                return item.date;
+            });
+        }, (err) => { console.log("Errror:", err); });
+    });
+}
+
+export const getExcersizeFiles = () => {
     return new Promise((resolve, reject) => {
-        fs.readdir(dirname, (err, files) => {
+        fs.readdir(filedir, (err, files) => {
             if(err){ reject(err); }else{
                 resolve(files);
             }
         });
     });
-}
-
-export const getExcersizeFiles = () => {
-    return readdir(__dirname+'/../data');
 }

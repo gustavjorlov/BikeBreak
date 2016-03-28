@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getExcersize, getExcersizeFiles} from './../src/filereader';
+import {getExcersize, getExcersizeFiles, getExcersizeDates} from './../src/filereader';
 import Promise from 'promise';
 
 const someError = (err) => console.log(":()", err);
@@ -12,6 +12,12 @@ describe('File reading test', () => {
             files.forEach((item) => expect(item.substr(-4)).to.equal('.gpx'));
             done();
         });
+    });
+    it('should get a list of the dates of the exersizes', (done) => {
+        getExcersizeDates().then((dates) => {
+            expect(dates).to.be.an('array');
+            done();
+        }, someError);
     });
     it('should get a nice view data summary object', (done) => {
         const testExersize = (exersize) => {
