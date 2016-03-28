@@ -21,19 +21,18 @@ const transformIntoJs = (filecontents) => {
     });
 }
 const _getName = (gpxJsData) => gpxJsData.gpx.trk[0].name[0];
-const _getDate = (gpxJsData) => gpxJsData.gpx.metadata[0].time[0];
+const _getDate = (gpxJsData) => gpxJsData.gpx.metadata ? gpxJsData.gpx.metadata[0].time[0] : gpxJsData.gpx.trk[0].time[0];
 const _getTrackPoints = (gpxJsData) => {
     return gpxJsData.gpx.trk[0].trkseg[0].trkpt.map((item) => {
         return {
             lat: item.$.lat,
             lon: item.$.lon,
             time: item.time[0],
-            heartrate: item.extensions[0]['gpxtpx:TrackPointExtension'][0]['gpxtpx:hr'][0],
+            heartrate: item.extensions ? item.extensions[0]['gpxtpx:TrackPointExtension'][0]['gpxtpx:hr'][0] : "",
             elevation: item.ele[0]
         };
     });
 }
-
 const transformIntoViewData = (gpxJsData) => {
     return {
         name: _getName(gpxJsData),
@@ -46,4 +45,18 @@ export const getExcersize = (filename) => {
     return readfile(filename)
         .then(transformIntoJs)
         .then(transformIntoViewData);
+}
+
+const readdir = (dirname) => {
+    return new Promise((resolve, reject) => {
+        fs.readdir(dirname, (err, files) => {
+            if(err){ reject(err); }else{
+                resolve(files);
+            }
+        });
+    });
+}
+
+export const getExcersizeFiles = () => {
+    return readdir(__dirname+'/../data');
 }
