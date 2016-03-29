@@ -17,13 +17,16 @@
     "prebuild": "npm run lint && npm run clean",
     "build": "npm run compile",
     "postbuild": "npm run copy",
-    "build:server": "babel server/src --out-dir server/dist"
+    "build:server": "babel server/src --out-dir server/dist",
+    "start:server": "node server/dist/server",
+    "start:client": "http-server client/dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "connect-busboy": "0.0.2",
     "express": "^4.13.4",
     "immutable": "^3.7.6",
     "mongodb": "^2.1.11",
@@ -43,6 +46,7 @@
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "chai-immutable": "^1.5.3",
+    "http-server": "^0.9.0",
     "mocha": "^2.4.5",
     "rimraf": "^2.5.2",
     "uglifyjs": "^2.4.10"
