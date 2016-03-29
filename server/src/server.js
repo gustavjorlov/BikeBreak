@@ -1,6 +1,6 @@
 import express from 'express';
 import {transformGPX} from './exerciseGPXParser.js';
-import {insertExercise} from './persist.js';
+import {insertExercise, getAllExercises} from './persist.js';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
@@ -16,20 +16,20 @@ app.post("/exercise", jsonParser, (req, res) => {
     transformGPX(req.body.exercise).then((exerciseData) => {
         insertExercise(exerciseData, () => {
             console.log("Inserted and all!");
+            res.sendStatus(200);
         });
     }, () => {
         console.log(":(");
+        res.sendStatus(500);
     });
 
-    res.sendStatus(200);
-    // parse data
-    // store exercise in database
 });
 
 app.get("/exercises", (req, res) => {
-    db.getAllTheStuff().then((stuff) => {
-        res.json(stuff);
+    getAllExercises().then((data) => {
+        res.json(data);
     }, (err) => {
+        console.log("GET /exercises", err);
         res.sendStatus(500);
     });
 });
