@@ -8,10 +8,15 @@ import $ from 'jquery';
 
 class Application extends React.Component{
     fileuploaded(filecontent){
-        console.log("fileuploaded", filecontent.length);
-        $.post("http://localhost:1337/exercise", filecontent, () => {
-            console.log("Yeah");
-        });
+        $.ajax({
+            url:"http://localhost:1337/exercise",
+            type:"POST",
+            data: JSON.stringify({"exercise": filecontent}),
+            contentType:"application/json; charset=utf-8",
+            success: () => {
+                console.log("Yeah too");
+            }
+        })
     }
     render(){
         return (

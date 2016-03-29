@@ -1,24 +1,28 @@
 import express from 'express';
-import {getExcersize} from './filereader';
+import {transformGPX} from './exerciseGPXParser.js';
 import {insertExercise} from './persist.js';
-import busboy from 'connect-busboy';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
 
 const app = express();
-app.use(busboy());
 
-app.use(function(req, res) {
-    req.busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-        console.log("Got a file", fieldname, file, filename, encoding, mimetype);
+app.use(morgan('dev'));
+app.use(express.static(__dirname + "/../../client/dist"));
+const jsonParser = bodyParser.json({limit: '50mb'});
+
+// app.use("/exercise", bodyParser.text());
+app.post("/exercise", jsonParser, (req, res) => {
+    // console.log(req.headers, Object.keys(req.body));
+    transformGPX(req.body.exercise).then((exerciseData) => {
+        insertExercise(exerciseData, () => {
+            console.log("Inserted and all!");
+        });
+    }, () => {
+        console.log(":(");
     });
-});
 
-app.get("/", (req, res) => {
-    res.send("hello world");
-});
-
-app.post("/exercise", (req, res) => {
-    // upload file
-    // parse file
+    res.sendStatus(200);
+    // parse data
     // store exercise in database
 });
 

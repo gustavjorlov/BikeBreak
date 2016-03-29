@@ -13,7 +13,7 @@ const readfile = (filename) => {
         });
     });
 }
-const transformIntoJs = (filecontents) => {
+export const transformIntoJs = (filecontents) => {
     return new Promise((resolve, reject) => {
         parseString(filecontents, (err, result) => {
             if(err){ reject(err); }else{
