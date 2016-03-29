@@ -4,22 +4,19 @@ export default class FileUpload extends React.Component{
 
     handleSubmit(e){
         e.preventDefault();
-    }
-
-    handleFile(e){
         const reader = new FileReader();
-        const file = e.target.files[0];
+        const file = e.target.getElementsByClassName("myfile")[0].files[0];
 
-        reader.onload = (upload) => {
-            console.log(upload.target.result);
-        }
         reader.readAsText(file);
+        reader.onload = (upload) => {
+            this.props.fileuploaded(upload.target.result);
+        }
     }
 
     render(){
         return (
-            <form onSubmit={this.handleSubmit} method="post" action="/add" encType="multipart/form-data">
-                <input type="file" name="image" onChange={this.handleFile} />
+            <form onSubmit={this.handleSubmit.bind(this)} method="post" action="/add" encType="multipart/form-data">
+                <input type="file" className="myfile" onChange={this.handleFile} />
                 <input type="submit" />
             </form>
         );
