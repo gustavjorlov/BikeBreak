@@ -7,15 +7,14 @@ import Footer from './components/Footer.js';
 import $ from 'jquery';
 
 class Application extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        this.state = {exercises: []};
         this.getAllExercises((data) => {
-            console.log(data);
-            this.exercises = data;
+            this.setState({ exercises: data });
         });
     }
 
-    
     fileuploaded(filecontent){
         $.ajax({
             url:"http://localhost:1337/exercise",
@@ -28,20 +27,14 @@ class Application extends React.Component{
         })
     }
     getAllExercises(callback){
-        $.ajax({
-            url: "http://localhost:1337/exercises",
-            type: "GET",
-            success: (data) => {
-                callback(data);
-            }
-        })
+        $.ajax({ url: "http://localhost:1337/exercises", type: "GET", success: callback });
     }
     render(){
         return (
             <div className="application">
                 <Header />
                 <FileUpload fileuploaded={this.fileuploaded} />
-                <ExerciseList exercises={this.exercises} />
+                <ExerciseList exercises={this.state.exercises} />
                 <Footer />
             </div>
         );
