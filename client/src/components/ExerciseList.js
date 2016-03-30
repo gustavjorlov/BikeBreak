@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default class ExerciseList extends React.Component{
-    renderExercise(exercise){
+const ExerciseList = ({exercises}) => {
+    const renderExercise = (exercise) => {
         return (
             <div key={exercise.date} className="exercise">
                 <h3>{exercise.name}</h3>
@@ -9,13 +9,12 @@ export default class ExerciseList extends React.Component{
             </div>
         );
     }
-    render(){
-        console.log(this.props);
-        return (
-            <div className="exercise_list">
-                <h3>Loooong list of exercises</h3>
-                {this.props.exercises.map(this.renderExercise)}
-            </div>
-        )
-    }
+    return (
+        <div className="exercise_list">
+            <h3>Loooong stateless list of exercises</h3>
+            {exercises.map(renderExercise)}
+        </div>
+    )
 }
+
+export default ExerciseList;
