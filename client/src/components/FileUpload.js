@@ -9,14 +9,14 @@ export default class FileUpload extends React.Component{
 
         reader.readAsText(file);
         reader.onload = (upload) => {
-            this.props.fileuploaded(upload.target.result);
+            this.props.fileRead(upload.target.result);
         }
     }
 
     render(){
         return (
             <form onSubmit={this.handleSubmit.bind(this)} method="post" action="/add" encType="multipart/form-data">
-                <input type="file" className="myfile" onChange={this.handleFile} />
+                <input type="file" className="myfile" />
                 <input type="submit" />
             </form>
         );
