@@ -5,13 +5,19 @@ import FileUpload from './components/FileUpload.js';
 import ExerciseList from './components/ExerciseList.js';
 import Footer from './components/Footer.js';
 import $ from 'jquery';
+import {createStore} from 'redux';
+import exerciseReducer from './reducers';
+import {addExercise, likeExercise} from './actions';
+
+let store = createStore(exerciseReducer);
 
 class Application extends React.Component{
     constructor(props){
         super(props);
         this.state = {exercises: []};
+        this.props.store.subscribe(() => this.setState(this.props.store.getState().toJS()));
         this.getAllExercises((data) => {
-            this.setState({ exercises: data });
+            data.forEach((item) => this.props.store.dispatch(addExercise(item)));
         });
     }
 
@@ -21,9 +27,7 @@ class Application extends React.Component{
             type:"POST",
             data: JSON.stringify({"exercise": filecontent}),
             contentType:"application/json; charset=utf-8",
-            success: () => {
-                console.log("Yeah too");
-            }
+            success: (exercise) => this.props.store.dispatch(addExercise(exercise))
         })
     }
     getAllExercises(callback){
@@ -33,7 +37,7 @@ class Application extends React.Component{
         return (
             <div className="application">
                 <Header />
-                <FileUpload fileRead={this.fileRead} />
+                <FileUpload fileRead={this.fileRead.bind(this)} />
                 <ExerciseList exercises={this.state.exercises} />
                 <Footer />
             </div>
@@ -42,6 +46,6 @@ class Application extends React.Component{
 }
 
 ReactDOM.render(
-    <Application />,
+    <Application store={store} />,
     document.getElementById('main')
 );

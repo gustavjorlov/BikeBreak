@@ -3,9 +3,7 @@ const url = 'mongodb://localhost:27017/bikebreak';
 import Promise from 'promise';
 
 const _insertExercise = (db, data, callback) => {
-    console.log("insertExercise", Object.keys(db), Object.keys(data));
     db.collection('exercises').insertOne(data, (err, result) => {
-        console.log("Inserted a document into the restaurants collection.", err, result);
         callback();
     });
 };

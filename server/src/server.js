@@ -12,11 +12,13 @@ const jsonParser = bodyParser.json({limit: '50mb'});
 
 // app.use("/exercise", bodyParser.text());
 app.post("/exercise", jsonParser, (req, res) => {
-    // console.log(req.headers, Object.keys(req.body));
     transformGPX(req.body.exercise).then((exerciseData) => {
         insertExercise(exerciseData, () => {
-            console.log("Inserted and all!");
-            res.sendStatus(200);
+            res.json({
+                name: exerciseData.name,
+                date: exerciseData.date,
+                trackpoints: exerciseData.trackpoints
+            });
         });
     }, () => {
         console.log(":(");
