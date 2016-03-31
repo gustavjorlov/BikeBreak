@@ -15,7 +15,10 @@ class Application extends React.Component{
     constructor(props){
         super(props);
         this.state = {exercises: []};
-        this.props.store.subscribe(() => this.setState(this.props.store.getState().toJS()));
+        this.props.store.subscribe(() => {
+            console.log(this.props.store.getState().toJS());
+            this.setState(this.props.store.getState().toJS());
+        });
         this.getAllExercises((response) => {
             response.data.forEach((item) => this.props.store.dispatch(addExercise(item)));
         });
@@ -37,12 +40,16 @@ class Application extends React.Component{
     getAllExercises(callback){
         $.ajax({ url: "http://localhost:1337/exercises", type: "GET", success: callback });
     }
+    exerciseLiked(id){
+        console.log(`exerciseLiked(${id})`);
+        this.props.store.dispatch(likeExercise(id));
+    }
     render(){
         return (
             <div className="application">
                 <Header />
                 <FileUpload fileRead={this.fileIsRead.bind(this)} />
-                <ExerciseList exercises={this.state.exercises} />
+                <ExerciseList onExerciseLiked={this.exerciseLiked.bind(this)} exercises={this.state.exercises} />
                 <Footer />
             </div>
         );

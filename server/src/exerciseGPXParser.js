@@ -45,10 +45,7 @@ const _getTrackPoints = (gpxJsData) => {
             time: item.time[0],
             heartrate: item.extensions ? item.extensions[0]['gpxtpx:TrackPointExtension'][0]['gpxtpx:hr'][0] : "",
             elevation: item.ele[0],
-            speed: _calculateSpeed({
-                lat: item.$.lat,
-                lon: item.$.lon
-            }, {
+            speed: _calculateSpeed({ lat: item.$.lat, lon: item.$.lon }, {
                 lat: nextItem ? nextItem.$.lat : null,
                 lon: nextItem ? nextItem.$.lon: null
             }, item.time[0], nextItem ? nextItem.time[0] : null)
@@ -59,6 +56,7 @@ const transformIntoViewData = (gpxJsData) => {
     return {
         name: _getName(gpxJsData),
         date: _getDate(gpxJsData),
-        trackpoints: _getTrackPoints(gpxJsData)
+        trackpoints: _getTrackPoints(gpxJsData),
+        likes: 0
     }
 }

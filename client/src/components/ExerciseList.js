@@ -1,11 +1,12 @@
 import React from 'react';
 
-const ExerciseList = ({exercises}) => {
+const ExerciseList = ({onExerciseLiked, exercises}) => {
     const renderExercise = (exercise) => {
         return (
-            <div key={exercise.date} className="exercise">
+            <div key={exercise.date} onClick={onExerciseLiked.bind(null, exercise.date)} className="exercise">
                 <h3>{exercise.name}</h3>
-                <p>{exercise.date}</p>
+                <p>{(new Date(exercise.date)).toLocaleString()}</p>
+                <p>Likes: {exercise.likes}</p>
             </div>
         );
     }

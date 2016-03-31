@@ -18,7 +18,8 @@ app.post("/exercise", jsonParser, (req, res) => {
                 data: {
                     name: exerciseData.name,
                     date: exerciseData.date,
-                    trackpoints: exerciseData.trackpoints
+                    trackpoints: exerciseData.trackpoints,
+                    likes: exerciseData.likes
                 }
             });
         }, (err) => sendError(res, err));
