@@ -1,6 +1,6 @@
 import express from 'express';
 import {transformGPX} from './exerciseGPXParser.js';
-import {insertExercise, getAllExercises} from './persist.js';
+import {insertExercise, getAllExercises, likeExercise} from './persist.js';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
@@ -10,7 +10,7 @@ app.use(morgan('dev'));
 app.use(express.static(__dirname + "/../../client/dist"));
 const jsonParser = bodyParser.json({limit: '50mb'});
 
-app.post("/exercise", jsonParser, (req, res) => {
+app.post("/exercise/create", jsonParser, (req, res) => {
     transformGPX(req.body.exercise).then((exerciseData) => {
         insertExercise(exerciseData).then(() => {
             res.json({
@@ -23,6 +23,15 @@ app.post("/exercise", jsonParser, (req, res) => {
                 }
             });
         }, (err) => sendError(res, err));
+    }, (err) => sendError(res, err));
+});
+
+app.post("/exercise/update/likes", jsonParser, (req, res) => {
+    likeExercise(req.body.date).then((likedExercise) => {
+        res.json({
+            err: null,
+            data: likedExercise
+        });
     }, (err) => sendError(res, err));
 });
 

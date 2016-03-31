@@ -26,7 +26,7 @@ class Application extends React.Component{
 
     fileIsRead(filecontent){
         $.ajax({
-            url:"http://localhost:1337/exercise",
+            url:"http://localhost:1337/exercise/create",
             type:"POST",
             data: JSON.stringify({"exercise": filecontent}),
             contentType:"application/json; charset=utf-8",
@@ -35,14 +35,21 @@ class Application extends React.Component{
                     this.props.store.dispatch(addExercise(response.data));
                 }
             }
-        })
+        });
     }
     getAllExercises(callback){
         $.ajax({ url: "http://localhost:1337/exercises", type: "GET", success: callback });
     }
-    exerciseLiked(id){
-        console.log(`exerciseLiked(${id})`);
-        this.props.store.dispatch(likeExercise(id));
+    exerciseLiked(date){
+        console.log(`exerciseLiked(${date})`);
+        this.props.store.dispatch(likeExercise(date));
+        $.ajax({
+            url:"http://localhost:1337/exercise/update/likes",
+            type:"POST",
+            data: JSON.stringify({ "date": date }),
+            contentType:"application/json; charset=utf-8",
+            success: (response) => { console.log(response); }
+        })
     }
     render(){
         return (
