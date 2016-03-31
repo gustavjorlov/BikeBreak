@@ -21,7 +21,7 @@ class Application extends React.Component{
         });
     }
 
-    fileRead(filecontent){
+    fileIsRead(filecontent){
         $.ajax({
             url:"http://localhost:1337/exercise",
             type:"POST",
@@ -37,7 +37,7 @@ class Application extends React.Component{
         return (
             <div className="application">
                 <Header />
-                <FileUpload fileRead={this.fileRead.bind(this)} />
+                <FileUpload fileRead={this.fileIsRead.bind(this)} />
                 <ExerciseList exercises={this.state.exercises} />
                 <Footer />
             </div>
