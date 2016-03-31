@@ -1,8 +1,6 @@
 # BikeBreak
-App to analyse training efforts, for personal use
+App to analyse training efforts, for personal use. Currently the app starts a local server which uses a local MongoDB database for storage. However, when deployed that will change and stuff will move around.
 
-1. Build the server: `npm run build:server`
-2. Build the client: `npm run build`
-3. Run MongoDB (separate shell: `mongod`)
-4. Run the server (separate shell: `npm run start:server`)
-5. Run the client (separate shell: `npm run start:client`)
+1. Build it: `npm run build`
+2. Run MongoDB (separate shell: `mongod`)
+3. Run it `npm start`
