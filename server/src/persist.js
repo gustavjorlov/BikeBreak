@@ -5,7 +5,6 @@ import Promise from 'promise';
 const _insertExercise = (db, data) => {
     return new Promise((resolve, reject) => {
         db.collection('exercises').findOne({'date': data.date}, (err, doc) => {
-            console.log(doc);
             if(!doc){
                 db.collection('exercises').insertOne(data, (err, result) => {
                     resolve(data);

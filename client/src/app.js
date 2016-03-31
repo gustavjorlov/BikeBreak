@@ -16,8 +16,8 @@ class Application extends React.Component{
         super(props);
         this.state = {exercises: []};
         this.props.store.subscribe(() => this.setState(this.props.store.getState().toJS()));
-        this.getAllExercises((data) => {
-            data.forEach((item) => this.props.store.dispatch(addExercise(item)));
+        this.getAllExercises((response) => {
+            response.data.forEach((item) => this.props.store.dispatch(addExercise(item)));
         });
     }
 
@@ -27,7 +27,11 @@ class Application extends React.Component{
             type:"POST",
             data: JSON.stringify({"exercise": filecontent}),
             contentType:"application/json; charset=utf-8",
-            success: (exercise) => this.props.store.dispatch(addExercise(exercise))
+            success: (response) => {
+                if(response.err){ console.log(response.err); }else{
+                    this.props.store.dispatch(addExercise(response.data));
+                }
+            }
         })
     }
     getAllExercises(callback){
