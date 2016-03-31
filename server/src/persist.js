@@ -2,9 +2,18 @@ const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/bikebreak';
 import Promise from 'promise';
 
-const _insertExercise = (db, data, callback) => {
-    db.collection('exercises').insertOne(data, (err, result) => {
-        callback();
+const _insertExercise = (db, data) => {
+    return new Promise((resolve, reject) => {
+        db.collection('exercises').findOne({'date': data.date}, (err, doc) => {
+            console.log(doc);
+            if(!doc){
+                db.collection('exercises').insertOne(data, (err, result) => {
+                    resolve(data);
+                });
+            }else{
+                reject("Already in the database");
+            }
+        });
     });
 };
 

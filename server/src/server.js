@@ -10,21 +10,21 @@ app.use(morgan('dev'));
 app.use(express.static(__dirname + "/../../client/dist"));
 const jsonParser = bodyParser.json({limit: '50mb'});
 
-// app.use("/exercise", bodyParser.text());
 app.post("/exercise", jsonParser, (req, res) => {
     transformGPX(req.body.exercise).then((exerciseData) => {
-        insertExercise(exerciseData, () => {
+        insertExercise(exerciseData).then(() => {
             res.json({
                 name: exerciseData.name,
                 date: exerciseData.date,
                 trackpoints: exerciseData.trackpoints
             });
+        }, (err) => {
+            console.log(":(", err);
         });
     }, () => {
         console.log(":(");
         res.sendStatus(500);
     });
-
 });
 
 app.get("/exercises", (req, res) => {
@@ -35,6 +35,5 @@ app.get("/exercises", (req, res) => {
         res.sendStatus(500);
     });
 });
-
 
 app.listen(1337, () => console.log('listening to 1337'));
