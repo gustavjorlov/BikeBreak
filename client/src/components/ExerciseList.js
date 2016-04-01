@@ -1,4 +1,5 @@
 import React from 'react';
+import SpeedGraph from './SpeedGraph';
 
 const ExerciseList = ({onExerciseLiked, exercises}) => {
     const renderExercise = (exercise) => {
@@ -7,6 +8,7 @@ const ExerciseList = ({onExerciseLiked, exercises}) => {
                 <h3>{exercise.name}</h3>
                 <p>{(new Date(exercise.date)).toLocaleString()}</p>
                 <p>Likes: {exercise.likes}</p>
+                <SpeedGraph trackpoints={exercise.trackpoints} />
             </div>
         );
     }
